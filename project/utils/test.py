@@ -23,6 +23,10 @@ class FunctionalTestCase(StaticLiveServerTestCase):
         cls.driver.quit()
         super(FunctionalTestCase, cls).tearDownClass()
 
+    def tearDown(self):
+        self.driver.delete_all_cookies()
+        self.driver.refresh()
+
     def save_cookie(self, name, path='/', expires='Tue, 20 Jun 2025 19:07:44 GMT'):
         value = self.client.cookies[name].value
 
