@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import sys
 import environ
-from django.urls import reverse_lazy
 from django.contrib.messages import constants as messages, DEFAULT_TAGS
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -42,11 +41,11 @@ env.read_env(path('.env'))  # parse .env into os.environ
 # Authentication
 AUTH_USER_MODEL = 'auth.User'
 
-LOGIN_URL = reverse_lazy('login')
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
-LOGOUT_URL = reverse_lazy('logout')
-
-LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 
 # Authentication Backends
