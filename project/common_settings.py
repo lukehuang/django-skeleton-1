@@ -321,7 +321,11 @@ LOGGING = {
             #
             # * Django enables this behavior by calling
             #   https://docs.python.org/3.5/library/logging.html#logging.captureWarnings
-        }
+        },
+        "selenium": {
+            # Set to DEBUG to see all of the selenium driver requests.
+            "level": "INFO",
+        },
     },
     "root": {
         "handlers": ["stderr"],
