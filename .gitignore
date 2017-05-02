@@ -1,5 +1,6 @@
 # Application
 bundles/
+node_modules/
 *.sqlite3
 
 # Byte-compiled / optimized / DLL files
