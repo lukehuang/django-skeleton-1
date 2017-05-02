@@ -52,7 +52,6 @@ LOGOUT_REDIRECT_URL = 'home'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'oauth.authbackend.OAuthBackend',
 ]
 
 
@@ -188,6 +187,7 @@ if env('GOOGLE_OPENIDCONNECT_KEY'):
 
     GOOGLE_OPENIDCONNECT_SECRET = env('GOOGLE_OPENIDCONNECT_SECRET')
 
+    AUTHENTICATION_BACKENDS.append('oauth.authbackend.OAuthBackend')
     INSTALLED_APPS.append('oauth')
 
 
