@@ -1,3 +1,8 @@
+import os
+import sys
+from atexit import register
+from signal import SIGTERM
+
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.urls import reverse
@@ -10,18 +15,25 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 
 
-class FunctionalTestCase(StaticLiveServerTestCase):
+class PhantomJS(webdriver.PhantomJS):
 
+    def quit(self):
+        # http://stackoverflow.com/a/38493285/1103124
+        self.service.process.send_signal(SIGTERM)
+        return super(PhantomJS, self).quit()
+
+
+# Use a shared phantomjs instance given slow startup speed
+phantomjs = PhantomJS(executable_path='node_modules/.bin/phantomjs')
+register(phantomjs.quit)
+
+
+class FunctionalTestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super(FunctionalTestCase, cls).setUpClass()
-        cls.driver = webdriver.PhantomJS(executable_path='node_modules/.bin/phantomjs')
+        cls.driver = phantomjs
         cls.domain = urlparse(cls.live_server_url).hostname
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.driver.quit()
-        super(FunctionalTestCase, cls).tearDownClass()
 
     def tearDown(self):
         self.driver.delete_all_cookies()
