@@ -39,10 +39,10 @@ class FunctionalTestCase(StaticLiveServerTestCase):
     def tearDown(self):
         # take screenshot on test failure
         if sys.exc_info()[0]:
-            test_method_name = self._testMethodName
-            self.save_logs('debug/%s.logs' % test_method_name)
-            self.save_page('debug/%s.html' % test_method_name)
-            assert self.save_screenshot('debug/%s.png' % test_method_name), \
+            test_name = '%s.%s.%s' % (self.__module__, self.__class__.__name__, self._testMethodName)
+            self.save_logs('debug/%s.logs' % test_name)
+            self.save_page('debug/%s.html' % test_name)
+            assert self.save_screenshot('debug/%s.png' % test_name), \
                 "Failed to save screenshot for %s." % self._testMethodName
 
         self.driver.delete_all_cookies()
