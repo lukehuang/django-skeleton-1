@@ -2,6 +2,7 @@ import os
 import sys
 from atexit import register
 from signal import SIGTERM
+from contextlib import contextmanager
 
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -91,6 +92,17 @@ class FunctionalTestCase(StaticLiveServerTestCase):
     def force_login(self, user, backend=None):
         self.client.force_login(user, backend)
         self.save_cookie(settings.SESSION_COOKIE_NAME)
+
+    def logout(self):
+        self.client.logout()
+
+    @contextmanager
+    def logged_in(self, **credentials):
+        try:
+            self.login(**credentials)
+            yield
+        finally:
+            self.logout()
 
     def url(self, name):
         """
