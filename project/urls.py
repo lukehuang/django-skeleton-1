@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-import django.contrib.auth.views
+from project import views
 
 from appname import urls
 
@@ -24,24 +24,13 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # Uncomment for oauth support
-    #url(r'^oauth/', include("oauth.urls")),
+    # url(r'^oauth/', include("oauth.urls")),
 
     # Auth urls
-    url(r'^accounts/login$', django.contrib.auth.views.login,
-        {'template_name': 'login.html'},
-        name="login"),
-    url(r'^accounts/logout$', django.contrib.auth.views.logout,
-        {'template_name': 'logout.html'},
-        name="logout"),
-    url(r'^accounts/change_password$',
-        django.contrib.auth.views.password_change,
-        {'template_name': 'password_change.html',
-         'post_change_redirect':
-             'django.contrib.auth.views.password_change_done'},
-        name="change_password"),
-    url(r'^accounts/change_password_done$',
-        django.contrib.auth.views.password_change_done,
-        {'template_name': 'password_change_done.html'}),
+    url(r'^accounts/login$', views.LoginView.as_view(), name='login'),
+    url(r'^accounts/logout$', views.LogoutView.as_view(), name='logout'),
+    url(r'^accounts/change_password$', views.PasswordChangeView.as_view(), name='change_password'),
+    url(r'^accounts/change_password_done$', views.PasswordChangeDoneView.as_view(), name='change_password_done'),
 
     url(r'', include(urls)),
 ]
